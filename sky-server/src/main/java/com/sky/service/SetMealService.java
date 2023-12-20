@@ -13,7 +13,7 @@ public interface SetMealService {
      * 新增套餐
      * @param setmealDTO
      */
-    void save(SetmealDTO setmealDTO);
+    void saveWithDish(SetmealDTO setmealDTO);
 
     /**
      * 分页查询套餐

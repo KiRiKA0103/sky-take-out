@@ -62,8 +62,23 @@
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id}
         </foreach>
-
     </delete>
+
+    <select id="queryList" resultType="Dish" parameterType="com.sky.entity.Dish">
+        select * from dish
+        <where>
+            <if test="name != null and name!=''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="categoryId != null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
 
 
 

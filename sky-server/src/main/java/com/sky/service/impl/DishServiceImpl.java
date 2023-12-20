@@ -115,7 +115,11 @@ public class DishServiceImpl implements DishService {
      */
     @Override
     public List<Dish> getList(Long categoryId) {
-        return dishMapper.queryList(categoryId);
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        return dishMapper.queryList(dish);
     }
 
     /**
@@ -125,6 +129,7 @@ public class DishServiceImpl implements DishService {
      */
     @Override
     public void changeStatus(Integer status, Long id) {
+        // TODO 菜品有关联的套餐时不能停售
         Dish dish = Dish.builder().id(id).status(status).build();
         dishMapper.update(dish);
     }

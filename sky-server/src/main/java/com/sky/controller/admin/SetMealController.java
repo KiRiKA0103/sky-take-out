@@ -32,7 +32,7 @@ public class SetMealController {
     @ApiOperation("新增套餐")
     public Result save(@RequestBody SetmealDTO setmealDTO){
 
-        setMealService.save(setmealDTO);
+        setMealService.saveWithDish(setmealDTO);
 
         return Result.success();
     }

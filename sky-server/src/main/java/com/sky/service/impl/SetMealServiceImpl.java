@@ -44,7 +44,7 @@ public class SetMealServiceImpl implements SetMealService {
      */
     @Override
     @Transactional
-    public void save(SetmealDTO setmealDTO) {
+    public void saveWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
         // 设置启售状态
@@ -133,6 +133,7 @@ public class SetMealServiceImpl implements SetMealService {
      * @param setmealDTO
      */
     @Override
+    @Transactional
     public void updateWithDish(SetmealDTO setmealDTO) {
         Setmeal setmeal = new Setmeal();
         BeanUtils.copyProperties(setmealDTO, setmeal);
@@ -162,6 +163,7 @@ public class SetMealServiceImpl implements SetMealService {
      * @param ids
      */
     @Override
+    @Transactional
     public void deleteBatch(List<Long> ids) {
         // 套餐是否在售
         for (Long id : ids) {

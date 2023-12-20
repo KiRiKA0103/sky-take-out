@@ -63,7 +63,7 @@ public class DishController {
 
         DishVO dishVO = dishService.getById(id);
 
-        log.info("dish:{}",dishVO);
+        // log.info("dish:{}",dishVO);
 
         return Result.success(dishVO);
     }
