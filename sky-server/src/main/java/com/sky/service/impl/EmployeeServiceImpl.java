@@ -9,13 +9,16 @@ import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.PasswordEditDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
+import com.sky.exception.PasswordEditFailedException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
 import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
@@ -33,6 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 员工登录
+     *
      * @param employeeLoginDTO
      * @return
      */
@@ -69,6 +74,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 新增员工
+     *
      * @param employeeDTO
      */
     @Override
@@ -99,6 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 分页查询员工数据
+     *
      * @param name
      * @param page
      * @param pageSize
@@ -118,6 +125,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 启用禁用员工账号
+     *
      * @param status
      * @param id
      */
@@ -134,6 +142,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * 根据id查询员工
+     *
      * @param id
      */
     @Override
@@ -143,9 +152,9 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
-
     /**
      * 修改员工
+     *
      * @param employeeDTO
      */
     @Override
@@ -153,10 +162,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Employee employee = new Employee();
 
-        BeanUtils.copyProperties(employeeDTO,employee);
+        BeanUtils.copyProperties(employeeDTO, employee);
 
         employeeMapper.update(employee);
     }
 
+    /**
+     * 修改密码
+     * @param passwordEditDTO
+     */
+    @Override
+    public void resetPassword(PasswordEditDTO passwordEditDTO) {
+        Employee employee = employeeMapper.queryById(BaseContext.getCurrentId());
+        if (DigestUtils.md5DigestAsHex(passwordEditDTO.getOldPassword().getBytes()).equals(employee.getPassword())) {
+            employee = Employee.builder().id(BaseContext.getCurrentId()).password(DigestUtils.md5DigestAsHex(passwordEditDTO.getNewPassword().getBytes())).build();
+            //log.info("修改密码:{}",employee);
+            employeeMapper.update(employee);
+        }else {
+            throw new PasswordEditFailedException(MessageConstant.PASSWORD_EDIT_FAILED);
+        }
+
+    }
 
 }

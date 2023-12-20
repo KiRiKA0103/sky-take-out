@@ -93,6 +93,7 @@ public class CategoryServiceImpl implements CategoryService {
                 .id(id)
                 .status(status)
                 .build();
+
         categoryMapper.update(category);
     }
 

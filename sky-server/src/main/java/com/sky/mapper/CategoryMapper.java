@@ -47,4 +47,7 @@ public interface CategoryMapper {
      */
     @AutoFill(value = OperationType.UPDATE)
     void update(Category category);
+
+    @Select("select name from category where id=#{id}")
+    String queryNameById(Long id);
 }
