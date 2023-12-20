@@ -95,13 +95,13 @@ public class DishServiceImpl implements DishService {
 
         BeanUtils.copyProperties(dish,dishVO);
 
-        Long categoryId = dish.getCategoryId();
         Long dishId = dish.getId();
+        Long categoryId = dish.getCategoryId();
 
-        // 查询分类名称和口味
+        // 查询菜品分类名称和口味
         String categoryName = categoryMapper.queryNameById(categoryId);
         List<DishFlavor> flavors = dishFlavorMapper.queryByDishId(dishId);
-        //设置分类名称和口味
+        //设置菜品分类名称和口味
         dishVO.setCategoryName(categoryName);
         dishVO.setFlavors(flavors);
 
@@ -138,11 +138,11 @@ public class DishServiceImpl implements DishService {
     public void updateWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
         BeanUtils.copyProperties(dishDTO,dish);
-        // 修改菜品表
+        // 修改菜品
         dishMapper.update(dish);
         // 获取菜品id
         Long dishId = dishDTO.getId();
-        // 获取口味
+        // 获取菜品口味
         List<DishFlavor> flavors = dishDTO.getFlavors();
 
         List<Long> ids = new ArrayList<>();
@@ -155,7 +155,7 @@ public class DishServiceImpl implements DishService {
             flavors.forEach(dishFlavor -> {
                 dishFlavor.setDishId(dishId);
             });
-            // 向口味表插入n条数据
+            // 重新插入菜品口味
             dishFlavorMapper.insertBatch(flavors);
         }
 
@@ -170,11 +170,11 @@ public class DishServiceImpl implements DishService {
     @Transactional
     public void deleteBatch(List<Long> ids) {
 
-        // 查询菜品是否起售
+        // 查询菜品是否在售
         for (Long id : ids) {
             Dish dish = dishMapper.queryById(id);
             if (dish.getStatus()== StatusConstant.ENABLE){
-                // 起售状态,不可删除
+                // 在售状态,不可删除
                 throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
             }
         }

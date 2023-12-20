@@ -5,13 +5,22 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.List;
+
 @Mapper
 public interface SetMealDishMapper {
+
+    void insertBatch(List<SetmealDish> setmealDishes);
 
     @Select("select count(*) from setmeal_dish where dish_id=#{id}")
     Long countByDishId(Long id);
 
-    @Insert("insert into setmeal_dish(setmeal_id, dish_id, name, price, copies) " +
-            "values (#{setmealId},#{dishId},#{name},#{price},#{copies})")
-    void insert(SetmealDish setmealDish);
+    @Select("select * from setmeal_dish where setmeal_id=#{setMealId}")
+    List<SetmealDish> queryBysetMealId(Long setMealId);
+
+
+    void deleteBatch(List<Long> setMealIds);
+
+    @Select("select count(*) from setmeal_dish sd left join dish d on d.id = sd.dish_id where sd.setmeal_id=#{id} and status=#{status}")
+    Long countDishStatus(Integer status,Long id);
 }
