@@ -183,4 +183,19 @@ public class SetMealServiceImpl implements SetMealService {
             throw new NotSelectedException(MessageConstant.SETMEAL_NOT_SELECTED);
         }
     }
+
+    /**
+     * 根据分类id查询套餐
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Setmeal> getList(Long categoryId) {
+        Setmeal setmeal = Setmeal.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+
+        return setMealMapper.getList(setmeal);
+    }
 }

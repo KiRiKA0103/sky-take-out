@@ -12,6 +12,7 @@ import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.*;
 import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -115,12 +116,14 @@ public class DishServiceImpl implements DishService {
      */
     @Override
     public List<Dish> getList(Long categoryId) {
+        // 查询启售状态的菜品
         Dish dish = Dish.builder()
                 .categoryId(categoryId)
                 .status(StatusConstant.ENABLE)
                 .build();
         return dishMapper.queryList(dish);
     }
+
 
     /**
      * 菜品起售停售
@@ -197,5 +200,37 @@ public class DishServiceImpl implements DishService {
         // 删除关联的口味
         dishFlavorMapper.deleteBatch(ids);
 
+    }
+
+    @Override
+    public List<DishVO> getListWithFlavor(Long categoryId) {
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .status(StatusConstant.ENABLE)
+                .build();
+        List<Dish> dishList = dishMapper.queryList(dish);
+        List<DishVO> dishVOList = new ArrayList<>();
+        if(dishList.size()>0){
+            dishList.forEach(d -> {
+                DishVO dishVO = new DishVO();
+                BeanUtils.copyProperties(d,dishVO);
+                String categoryName = categoryMapper.queryNameById(d.getCategoryId());
+                List<DishFlavor> flavors = dishFlavorMapper.queryByDishId(d.getId());
+                dishVO.setCategoryName(categoryName);
+                dishVO.setFlavors(flavors);
+
+                dishVOList.add(dishVO);
+            });
+        }
+
+        return dishVOList;
+    }
+
+    @Override
+    public List<DishItemVO> getDishList(Long id) {
+
+        List<DishItemVO> dishItemVOList = dishMapper.getDishList(id);
+
+        return dishItemVOList;
     }
 }

@@ -4,6 +4,7 @@ import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.result.PageResult;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 
 import java.util.List;
@@ -37,6 +38,7 @@ public interface DishService {
      */
     List<Dish> getList(Long categoryId);
 
+
     /**
      * 菜品起售停售
      * @param status
@@ -55,4 +57,9 @@ public interface DishService {
      * @param ids
      */
     void deleteBatch(List<Long> ids);
+
+
+    List<DishVO> getListWithFlavor(Long categoryId);
+
+    List<DishItemVO> getDishList(Long id);
 }
