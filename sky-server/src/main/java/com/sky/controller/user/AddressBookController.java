@@ -18,6 +18,11 @@ public class AddressBookController {
     @Autowired
     private AddressBookService addressBookService;
 
+    /**
+     * 新增地址
+     * @param addressBook
+     * @return
+     */
     @PostMapping
     @ApiOperation("新增地址")
     public Result sava(@RequestBody AddressBook addressBook){
@@ -26,6 +31,11 @@ public class AddressBookController {
         return Result.success();
     }
 
+    /**
+     * 设置默认地址
+     * @param addressBook
+     * @return
+     */
     @PutMapping("/default")
     @ApiOperation("设置默认地址")
     public Result setDefault(@RequestBody AddressBook addressBook){
@@ -33,6 +43,10 @@ public class AddressBookController {
         return Result.success();
     }
 
+    /**
+     * 查询默认地址
+     * @return
+     */
     @GetMapping("/default")
     @ApiOperation("查询默认地址")
     public Result<AddressBook> getDefault(){
@@ -41,6 +55,11 @@ public class AddressBookController {
         return Result.success(addressBook);
     }
 
+    /**
+     * 根据id查询地址
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @ApiOperation("根据id查询地址")
     public Result<AddressBook> getById(@PathVariable Long id){
@@ -48,6 +67,10 @@ public class AddressBookController {
         return Result.success(addressBook);
     }
 
+    /**
+     * 查询当前登录用户的所有地址信息
+     * @return
+     */
     @GetMapping("/list")
     @ApiOperation("查询当前登录用户的所有地址信息")
     public Result<List<AddressBook>> getList(){
@@ -55,6 +78,11 @@ public class AddressBookController {
         return Result.success(bookList);
     }
 
+    /**
+     * 根据id删除地址
+     * @param id
+     * @return
+     */
     @DeleteMapping
     @ApiOperation("根据id删除地址")
     public Result delete(Long id){
@@ -63,6 +91,11 @@ public class AddressBookController {
         return Result.success();
     }
 
+    /**
+     * 根据id修改地址
+     * @param addressBook
+     * @return
+     */
     @PutMapping
     @ApiOperation("根据id修改地址")
     public Result update(@RequestBody AddressBook addressBook){
