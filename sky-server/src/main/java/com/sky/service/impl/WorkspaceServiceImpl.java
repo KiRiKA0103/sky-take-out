@@ -33,11 +33,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private SetMealMapper setMealMapper;
 
     @Override
-    public BusinessDataVO getBusinessData() {
+    public BusinessDataVO getBusinessData(LocalDate begin,LocalDate end) {
 
-        LocalDate today = LocalDate.now();
-        LocalDateTime beginTime = LocalDateTime.of(today, LocalTime.MIN);
-        LocalDateTime endTime = LocalDateTime.of(today, LocalTime.MAX);
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
 
 
         Map map = new HashMap();
@@ -79,7 +78,6 @@ public class WorkspaceServiceImpl implements WorkspaceService {
 
     @Override
     public SetmealOverViewVO getOverviewSetmeals() {
-
         return setMealMapper.countStatus();
     }
 

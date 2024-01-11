@@ -29,7 +29,9 @@ public class WorkspaceController {
     public Result<BusinessDataVO> businessData(){
         log.info("查询今日运营数据");
 
-        BusinessDataVO businessDataVO = workspaceService.getBusinessData();
+        LocalDate today = LocalDate.now();
+
+        BusinessDataVO businessDataVO = workspaceService.getBusinessData(today,today);
 
         return Result.success(businessDataVO);
     }
