@@ -116,14 +116,14 @@ public class ReportServiceImpl implements ReportService {
             map.put("begin",beginTime);
             // 今日订单总数
             Integer totalCount = orderMapper.countByMap(map);
-            totalCount = totalCount==null?0:totalCount;
+            // totalCount = totalCount==null?0:totalCount;
             totalOrderCount+=totalCount;
             orderCountList.add(totalCount);
 
             map.put("status",Orders.COMPLETED);
             // 今日有效订单数
             Integer validCount = orderMapper.countByMap(map);
-            validCount = validCount==null?0:validCount;
+            // validCount = validCount==null?0:validCount;
             validOrderCount+=validCount;
             validOrderCountList.add(validCount);
 

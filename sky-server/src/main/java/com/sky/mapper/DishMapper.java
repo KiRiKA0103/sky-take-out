@@ -6,6 +6,7 @@ import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.vo.DishItemVO;
+import com.sky.vo.DishOverViewVO;
 import com.sky.vo.DishVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -68,4 +69,7 @@ public interface DishMapper {
 
     @Select("select * from dish d left join setmeal_dish sd on d.id = sd.dish_id where sd.setmeal_id=#{id}")
     List<DishItemVO> getDishList(Long id);
+
+    @Select("select sum(status) sold,count(*)-sum(status) discontinued from dish")
+    DishOverViewVO countStatus();
 }
